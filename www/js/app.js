@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic'])
+var rasplexRemote = angular.module('rasplexRemote', ['ionic', 'rasplexRemote.controllers', 'rasplexRemote.services']);
 
-.run(function($ionicPlatform) {
+rasplexRemote.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,9 +18,9 @@ angular.module('starter', ['ionic'])
       StatusBar.styleDefault();
     }
   });
-})
+});
 
-.config(function($stateProvider, $urlRouterProvider) {
+rasplexRemote.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
   .state('app', {
@@ -33,7 +33,8 @@ angular.module('starter', ['ionic'])
     url: "/search",
     views: {
       'menuContent': {
-        templateUrl: "templates/search.html"
+        templateUrl: "templates/search.html",
+        controller: "remoteControl"
       }
     }
   })

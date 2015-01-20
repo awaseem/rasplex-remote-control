@@ -1,1 +1,9 @@
 /* Empty. Add your own CSS if you like */
+.center {
+	text-align: center;
+}
+
+.remote-button {
+	width: 100px;
+	height: 100px;
+}
