@@ -1,18 +1,23 @@
 var rasplexController = angular.module('rasplexRemote.controllers', []);
 
-rasplexController.controller("remoteControl", function($scope, $http, navigation) {
+rasplexController.controller("remoteControl", function($scope, $http, navigation, httpRequests) {
 
-    var baseURL = "http://192.168.1.70:3005";
+    var clientURL = "http://192.168.1.70:3005";
+
+    var serverURL = "http://192.168.1.50:32400";
 
     $scope.navCommand = function (nav) {
-        var upURL = baseURL + navigation.commands[nav];
-        $http.get(upURL)
-            .success(function(data, status, headers, config) {
-                
-            })
-            .error(function(data, status, headers, config) {
-                alert("Something went wrong");
+        
+        httpRequests.getMovieList(serverURL)
+            .then(function (result) {
+                console.log(result);
+            }, function(err) {
+                console.log(error);
             });
+
+        //httpRequests.sendClientCommand(clientURL, nav);
     };
+
+
 
 });
