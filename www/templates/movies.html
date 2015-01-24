@@ -1,0 +1,9 @@
+<ion-view view-title="Movies">
+	<ion-content scroll="True">
+		<ion-list>
+			<ion-item ng-repeat="movie in movieList" href="#/app/movies/{{movie._ratingKey}}">
+				<h2>{{ movie._title }}</h2>
+			</ion-item>
+		</ion-list>
+  	</ion-content>
+</ion-view>

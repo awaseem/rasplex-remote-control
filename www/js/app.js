@@ -29,15 +29,34 @@ rasplexRemote.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: "templates/menu.html",
   })
 
-  .state('app.search', {
-    url: "/search",
+  .state('app.remote', {
+    url: "/remote",
     views: {
       'menuContent': {
-        templateUrl: "templates/search.html",
+        templateUrl: "templates/remote.html",
         controller: "remoteControl"
       }
     }
   })
+
+  .state('app.movies', {
+    url: "/movies",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/movies.html",
+        controller: "movieList"
+      }
+    }
+  })
+
+  .state('app.movie', {
+    url: "/movies/:movieKey",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/movie.html",
+      }
+    }
+  })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/search');
+  $urlRouterProvider.otherwise('/app/remote');
 });
