@@ -54,6 +54,7 @@ rasplexRemote.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'menuContent': {
         templateUrl: "templates/movie.html",
+        controller: "movieItem"
       }
     }
   })

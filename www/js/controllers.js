@@ -12,16 +12,53 @@ rasplexController.controller("remoteControl", function($scope, $http, serverRequ
 });
 
 rasplexController.controller("movieList", function($scope, serverRequests) {
-
-    serverRequests.getMovieList(serverURL)
-        .then(function(movieList){
-            console.log(movieList);
-            $scope.movieList = movieList;
-        }, function(){
-            $scope.movieList = [];
-        });
-
-    $scope.getThumbanil = function(URL) {
-        return serverURL + URL;
+    
+    $scope.init = function() {
+        $scope.movieList = [];
+        $scope.getMovieList();
     };
+
+    $scope.getMovieList = function() { 
+        serverRequests.getMovieList(serverURL)
+            .then(function(movieList) {
+                $scope.movieList = movieList;
+            }, function() {
+                $scope.movieList = [];
+            });
+    };
+
+    $scope.init();
+
+});
+
+rasplexController.controller("movieItem", function($scope, serverRequests, $stateParams, clientRequests) {
+    
+    $scope.init = function() {
+        $scope.getMovieItem();
+        $scope.playMovie();
+    };
+
+    $scope.getMovieItem = function() {
+        serverRequests.getMovieItem(serverURL, $stateParams.movieKey)
+            .then(function(movieItem) {
+                $scope.movieItem = movieItem;
+            }, function() {
+                $scope.movieItem = undefined;
+            });
+    };
+
+    $scope.playMovie = function() {
+        clientRequests.playMovie("192.168.1.50", "32400", "192.168.1.70", "3005", "111");
+    };
+
+    $scope.ngRepeatCheck = function(directoryObject) {
+        if (Array.isArray(directoryObject)) {
+            return directoryObject;
+        }
+        else{
+            return new Array(directoryObject);
+        }
+    };
+
+    $scope.init();
 });

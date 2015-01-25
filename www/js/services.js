@@ -32,7 +32,7 @@ rasplexServices.factory("serverRequests", function($http, $q) {
 		var movieList = [];
 		var URL = serverURL + "/library/sections/";
 
-		$http.get(URL, { timeout: 5000, cache: true })
+		$http.get(URL, { timeout: 5000 })
 			.success(function(result){
 				sectionsObject = x2js.xml_str2json(result);
 				for (var i = 0; i < sectionsObject.MediaContainer.Directory.length; i++) {
@@ -43,19 +43,33 @@ rasplexServices.factory("serverRequests", function($http, $q) {
 								movieList.push.apply(movieList, x2js.xml_str2json(result).MediaContainer.Video);
 								defer.resolve(movieList);
 							})
-							.error(function(error, status) {
-								movieList.push.apply(movieList, [])
-								defer.reject(movieList);
+							.error(function(error) {
+								defer.reject(error);
 							});
 					}
 				}
 			})
 			.error(function(error, status) {
-				defer.reject(movieList);
+				defer.reject(error);
 			});
 		
 		return defer.promise;
-	}
+	};
+
+	self.getMovieItem = function(serverURL, movieKey) {
+		var defer = $q.defer();
+		movieObject = undefined;
+		URL = serverURL + "/library/metadata/" + movieKey;
+		$http.get(URL, { timeout: 5000 })
+			.success(function(result) {
+				movieObject = x2js.xml_str2json(result);
+				defer.resolve(movieObject.MediaContainer.Video);
+			})
+			.error(function(error){
+				defer.reject(error);
+			});
+		return defer.promise;
+	};
 
 	return self;
 });
@@ -63,6 +77,13 @@ rasplexServices.factory("serverRequests", function($http, $q) {
 rasplexServices.factory("clientRequests", function($http, $q) {
 
 	var self = this;
+
+	var x2js = new X2JS();
+
+	var playURL = function(clientIP, clientPort, clientID, serverIP, serverPort, serverID, mediaKey) {
+		var URL = "http://" + clientIP + ":" + clientPort + "/player/playback/playMedia?key=%2Flibrary%2Fmetadata%2F" + mediaKey + "&offset=0&X-Plex-Client-Identifier=" + clientID + "&machineIdentifier=" + serverID + "&address=" + serverIP + "&port=" + serverPort + "&protocol=http&path=http%3A%2F%2F" + serverIP + "%3A" + serverPort + "%2Flibrary%2Fmetadata%2F" + mediaKey;
+		return URL
+	}
 
 	var commands = {
 		home: "/player/navigation/home",
@@ -89,6 +110,18 @@ rasplexServices.factory("clientRequests", function($http, $q) {
                 alert("ERROR: could not reach server, either your rasplex is down or the request timed out");
             });
 	};
+
+	self.playMovie = function(serverIP, serverPort, clientIP, clientPort, mediaKey) {
+		var serverURL = "http://" + serverIP + ":" +serverPort;
+		var serverObject = $http.get(serverURL);
+		var clientURL = "http://" + serverIP + ":" +serverPort + "/clients";
+		var clientObject = $http.get(clientURL);
+		$q.all([serverObject, clientObject]).then(function(results) {
+			var serverID = x2js.xml_str2json(results[0].data).MediaContainer._machineIdentifier;
+			var clientID = x2js.xml_str2json(results[1].data).MediaContainer.Server._machineIdentifier;
+			console.log(playURL(clientIP, clientPort, clientID, serverIP, serverPort, serverID, mediaKey));
+		});
+	}
 
 	return self;
 

@@ -9,6 +9,24 @@
 }
 
 .thumbnail {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	width: 100px;
-	height: 100px;
+	height: 150px;
+}
+
+.tagline {
+	font-style: italic;
+	color: grey;
+}
+
+.details {
+	font-style: italic;
+	color: grey;	
+}
+
+.summary {
+	padding-left: 15px;
+	padding-right: 15px;
 }

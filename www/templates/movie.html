@@ -1,5 +1,30 @@
-<ion-view view-title="Movie">
-  <ion-content>
-    <h1>todo</h1>
-  </ion-content>
+<ion-view view-title="Information">
+	<ion-content>
+		<div class="center">
+	    	<h1>{{ movieItem._title }}</h1>
+	    	<h5 class="center tagline">{{ movieItem._tagline }}</h5>
+	    	<h3>Summary</h3>
+	    	<p class="center summary">{{ movieItem._summary }}</p>
+	    	<h3>Director</h3>
+	    	<p ng-repeat="director in ngRepeatCheck(movieItem.Director)">{{ director._tag }}</p>
+	    	<h3>Actors</h3>
+	    	<p ng-repeat="role in ngRepeatCheck(movieItem.Role)|limitTo:5">{{ role._tag }} as {{ role._role }}</p>
+    	</div>
+    	<div class="row">
+    		<div class="col col-33 center">
+    			<h4>IMDB Rating</h4>
+    			<p class="details">{{ movieItem._rating | number:1 }}/10</p>
+    			<h4>Year</h4>
+    			<p class="details">{{ movieItem._year }}</p>
+    			<h4>Rating</h4>
+    			<p class="details">{{ movieItem._contentRating }}</p>
+    		</div>
+    		<div class="col col-33 col-offset-33 center">
+    			<h4>Resolution</h4>
+    			<p class="details">{{ movieItem.Media._videoResolution }}</p>
+    			<h4>Duration</h4>
+    			<p class="details">{{ movieItem._duration }}</p>
+    		</div>
+    	</div>
+	</ion-content>
 </ion-view>
