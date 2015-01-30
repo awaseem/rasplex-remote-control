@@ -2,28 +2,83 @@ var rasplexServices = angular.module('rasplexRemote.services', []);
 
 rasplexServices.factory("ipAddress", function() {
 
-	self = this;
+	var self = {};
 
-	self.saveIpAddress = function(ipObject) {
-		window.localStorage["ipAddress"] = angular.toJson(ipObject);
+	self.setServerIP = function(serverIP) {
+		console.log(serverIP);
+		window.localStorage["serverIP"] = angular.toJson(serverIP);
 	};
 
-	self.getIpAddress = function() {
-		var ipAddresses = window.localStorage["ipAddress"];
-		if (ipAddresses) {
-			return angular.fromJson(ipAddresses);
+	self.getServerIP = function() {
+		var serverIP = window.localStorage["serverIP"];
+		if (serverIP) {
+			console.log("hello");
+			return angular.fromJson(serverIP);
 		}
 		else {
-			return [];
+			console.log("world");
+			return "0.0.0.0";
 		}
-	}
+	};
+
+	self.setServerPort = function(serverPort) {
+		window.localStorage["serverPort"] = angular.toJson(serverPort);
+	};
+
+	self.getServerPort = function() {
+		var serverPort = window.localStorage["serverPort"];
+		if (serverPort) {
+			return angular.fromJson(serverPort);
+		}
+		else {
+			return "";
+		}
+	};
+
+	self.setClientIP = function(clientIP) {
+		window.localStorage["clientIP"] = angular.toJson(clientIP);
+	};
+
+	self.getClientIP = function() {
+		var clientIP = window.localStorage["clientIP"];
+		if (clientIP) {
+			return angular.fromJson(clientIP);
+		}
+		else {
+			return "";
+		}
+	};
+
+	self.setClientPort = function(clientPort) {
+		window.localStorage["clientPort"] = angular.toJson(clientPort);
+	};
+
+	self.getClientPort = function() {
+		var clientPort = window.localStorage["clientPort"];
+		if (clientPort) {
+			return angular.fromJson(clientPort);
+		}
+		else {
+			return "";
+		}
+	};
+
+	self.getClientURL = function() {
+		return "http://" + self.getClientIP() + ":" + self.getClientPort();
+
+	};
+
+	self.getServerURL = function() {
+		return "http://" + self.getServerIP() + ":" + self.getServerPort();
+	};
+
 
 	return self;
 });
 
 rasplexServices.factory("serverRequests", function($http, $q) {
 
-	self = this;
+	self = {};
 
 	var x2js = new X2JS();
 
@@ -76,7 +131,7 @@ rasplexServices.factory("serverRequests", function($http, $q) {
 
 rasplexServices.factory("clientRequests", function($http, $q) {
 
-	var self = this;
+	var self = {};
 
 	var x2js = new X2JS();
 
@@ -119,7 +174,7 @@ rasplexServices.factory("clientRequests", function($http, $q) {
 		$q.all([serverObject, clientObject]).then(function(results) {
 			var serverID = x2js.xml_str2json(results[0].data).MediaContainer._machineIdentifier;
 			var clientID = x2js.xml_str2json(results[1].data).MediaContainer.Server._machineIdentifier;
-			console.log(playURL(clientIP, clientPort, clientID, serverIP, serverPort, serverID, mediaKey));
+			$http.get(playURL(clientIP, clientPort, clientID, serverIP, serverPort, serverID, mediaKey));
 		});
 	}
 

@@ -1,5 +1,6 @@
 <ion-view view-title="Movies">
 	<ion-content scroll="True">
+		<ion-refresher on-refresh="getMovieList()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="movie in movieList" href="#/app/movies/{{movie._ratingKey}}">
 				<h2>{{ movie._title }}</h2>

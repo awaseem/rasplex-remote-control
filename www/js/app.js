@@ -49,6 +49,16 @@ rasplexRemote.config(function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('app.settings', {
+    url: "/settings",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/settings.html",
+        controller: "settings"
+      }
+    }
+  })
+
   .state('app.movie', {
     url: "/movies/:movieKey",
     views: {

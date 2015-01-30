@@ -1,6 +1,6 @@
 <ion-view view-title="Information">
 	<ion-content>
-		<div class="center">
+		<div class="padding center">
 	    	<h1>{{ movieItem._title }}</h1>
 	    	<h5 class="center tagline">{{ movieItem._tagline }}</h5>
 	    	<h3>Summary</h3>
@@ -25,6 +25,9 @@
     			<h4>Duration</h4>
     			<p class="details">{{ movieItem._duration }}</p>
     		</div>
+    	</div>
+    	<div class="center">
+    		<button class="button button-icon icon ion-play remote-button" ng-click="playMovie()"></button>
     	</div>
 	</ion-content>
 </ion-view>
