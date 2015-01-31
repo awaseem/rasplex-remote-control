@@ -24,14 +24,19 @@
 				<button class="button button-icon icon ion-chevron-down remote-button" ng-click="navCommand('down')"></button>
 			</div>
 			<div class="row">
-				<div class="col col-33">
-					<button class="button button-icon icon ion-volume-medium remote-button"></button>
-				</div>
-				<div class="col col-33">
+				<div class="col col-33 col-offset-33">
 					<button class="button button-icon icon ion-home remote-button" ng-click="navCommand('home')"></button>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col col-33">
-					<button class="button button-icon icon ion-volume-low remote-button"></button>
+					<button class="button button-icon icon ion-skip-backward remote-button" ng-click="navCommand('skipPrevious')"></button>
+				</div>
+				<div class="col col-33">
+					<button class="button button-icon icon ion-pause remote-button" ng-click="navCommand('pause')"></button>
+				</div>
+				<div class="col col-33">
+					<button class="button button-icon icon ion-skip-forward remote-button" ng-click="navCommand('stepForward')"></button>
 				</div>
 			</div>
 		</div>

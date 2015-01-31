@@ -1,73 +1,82 @@
-// Ionic Starter App
+/**
+ * @fileoverview "Main" method including the angular run method and config
+ * method for url routing
+ * @author waseema393@gmail.com (Ali Waseem)
+ */
+var rasplexRemote = angular.module("rasplexRemote", ["ionic", "rasplexRemote.controllers", "rasplexRemote.services"]);
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-var rasplexRemote = angular.module('rasplexRemote', ['ionic', 'rasplexRemote.controllers', 'rasplexRemote.services']);
-
+/** 
+ * Angular run method, sets up the different attributes for the mobile 
+ * mobile platform.
+ */
 rasplexRemote.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
+    $ionicPlatform.ready(function() {
+
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            
+            // org.apache.cordova.statusbar required
+            StatusBar.styleDefault();
+        }
+    });
 });
 
+/**
+ * URL router, handles all calls made from href in the templates.
+ * Depending what URL is being called, the appropriate view and controller is loaded.
+ * If the URL is not recognized by the router, it will route to the default.
+ * All controllers are defined in controller.js. 
+ */
 rasplexRemote.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+    $stateProvider
+        .state("app", {
+            url: "/app",
+            abstract: true,
+            templateUrl: "templates/menu.html",
+        })
 
-  .state('app', {
-    url: "/app",
-    abstract: true,
-    templateUrl: "templates/menu.html",
-  })
+        .state("app.remote", {
+            url: "/remote",
+            views: {
+                "menuContent": {
+                    templateUrl: "templates/remote.html",
+                    controller: "remoteControl"
+                }
+            }
+        })
 
-  .state('app.remote', {
-    url: "/remote",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/remote.html",
-        controller: "remoteControl"
-      }
-    }
-  })
+        .state("app.movies", {
+            url: "/movies",
+            views: {
+                "menuContent": {
+                    templateUrl: "templates/movies.html",
+                    controller: "movieList"
+                }
+            }
+        })
 
-  .state('app.movies', {
-    url: "/movies",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/movies.html",
-        controller: "movieList"
-      }
-    }
-  })
+        .state("app.settings", {
+            url: "/settings",
+            views: {
+                "menuContent": {
+                    templateUrl: "templates/settings.html",
+                    controller: "settings"
+                }
+            }
+        })
 
-  .state('app.settings', {
-    url: "/settings",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/settings.html",
-        controller: "settings"
-      }
-    }
-  })
-
-  .state('app.movie', {
-    url: "/movies/:movieKey",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/movie.html",
-        controller: "movieItem"
-      }
-    }
-  })
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/remote');
+        .state("app.movie", {
+            url: "/movies/:movieKey",
+            views: {
+                "menuContent": {
+                    templateUrl: "templates/movie.html",
+                    controller: "movieItem"
+                }
+            }
+        })
+    
+    // if none of the above states are matched, use this as the default
+    $urlRouterProvider.otherwise("/app/remote");
 });
